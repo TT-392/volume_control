@@ -1,0 +1,9 @@
+baud rate: 115200
+min visible brightness: 0x07
+max value for anything: 0xfe
+
+start byte: 0xFF
+
+0xFF, 0x00: clear all
+0xFF, 0x08, brightness: fill all
+0xFF, 0x18, x, y, 
