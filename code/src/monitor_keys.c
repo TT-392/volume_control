@@ -2,7 +2,9 @@
 #include "pico/stdlib.h"
 #include "pins_left.h"
 
+const uint64_t timeout_us = 1000;
 _Atomic bool key_matrix[5][7] = {0};
+uint64_t timestamp_last_update_us[5][7] = {0};
 
 void monitor_keys() {
     uint cols[] = {PIN_COL0, PIN_COL1, PIN_COL2, PIN_COL3, PIN_COL4, PIN_COL5, PIN_COL6};
@@ -28,11 +30,17 @@ void monitor_keys() {
             gpio_put(rows[r], 0);
 
             sleep_us(1);
+
+            uint64_t current_time_us = to_us_since_boot(get_absolute_time());
+
             for (int c = 0; c < sizeof(cols) / sizeof(uint); c++) {
-                if (!gpio_get(cols[c])) {
-                    key_matrix[r][c] = 1;
-                } else {
-                    key_matrix[r][c] = 0;
+                bool key_state = !gpio_get(cols[c]);
+
+                if (key_state != key_matrix[r][c]) {
+                    if (current_time_us - timestamp_last_update_us[r][c] > timeout_us) {
+                        key_matrix[r][c] = key_state;
+                        timestamp_last_update_us[r][c] = current_time_us;
+                    }
                 }
             }
             gpio_put(rows[r], 1);

@@ -26,11 +26,10 @@ void key_matrix_to_events(_Atomic bool key_matrix[5][7]) {
 
     for (int y = 0; y < 5; y++) {
         for (int x = 0; x < 7; x++) {
-            if (last_matrix[y][x] != key_matrix[y][x]) {
+            if (last_matrix[y][x] == 0 && key_matrix[y][x] == 1) {
                 printf("%c", keymap_left[y][x]);
-
-                last_matrix[y][x] = key_matrix[y][x];
             }
+            last_matrix[y][x] = key_matrix[y][x];
         }
     }
 }
