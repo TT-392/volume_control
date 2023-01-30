@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "pins_left.h"
-#include "pico/bootrom.h"
 
+_Atomic bool key_matrix[5][7] = {0};
 
 void monitor_keys() {
     uint cols[] = {PIN_COL0, PIN_COL1, PIN_COL2, PIN_COL3, PIN_COL4, PIN_COL5, PIN_COL6};
@@ -22,6 +22,7 @@ void monitor_keys() {
         gpio_put(rows[i], 0);
     }
 
+
     while (1) {
         for (int r = 0; r < sizeof(rows) / sizeof(uint); r++) {
             gpio_put(rows[r], 0);
@@ -29,12 +30,11 @@ void monitor_keys() {
             sleep_us(1);
             for (int c = 0; c < sizeof(cols) / sizeof(uint); c++) {
                 if (!gpio_get(cols[c])) {
-                    printf("%i %i\n", r, c);
-                    if (r == 2 && c == 0)
-                        reset_usb_boot(0, 0);
+                    key_matrix[r][c] = 1;
+                } else {
+                    key_matrix[r][c] = 0;
                 }
             }
-            sleep_us(1);
             gpio_put(rows[r], 1);
 
 

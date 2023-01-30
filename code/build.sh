@@ -11,7 +11,11 @@ cd ..
 
 if [ "$1" = "flash" ] && [ $retval -eq 0 ];
 then
-    $openocd_install_location/src/openocd -s $openocd_install_location/tcl -f openocd/flash.cfg
+    #$openocd_install_location/src/openocd -s $openocd_install_location/tcl -f openocd/flash.cfg
+    picotool reboot -f -u
+    sleep 1
+    picotool load build/main.uf2
+    picotool reboot
 fi
 
 
