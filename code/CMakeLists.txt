@@ -15,6 +15,7 @@ if (TARGET tinyusb_device)
         src/main.c
         src/monitor_keys.c
         src/defines.c
+        src/trrs.c
     )
 
     target_include_directories(main PRIVATE src/)
