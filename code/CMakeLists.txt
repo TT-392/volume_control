@@ -14,6 +14,7 @@ if (TARGET tinyusb_device)
     add_executable(main
         src/main.c
         src/monitor_keys.c
+        src/defines.c
     )
 
     target_include_directories(main PRIVATE src/)

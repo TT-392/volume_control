@@ -6,13 +6,16 @@
 #include "pico/bootrom.h"
 #include "pico/multicore.h"
 #include "monitor_keys.h"
-#include "keymap.h"
+#include "defines.h"
 
-void print_key_matrix(_Atomic bool key_matrix[5][7]) {
+
+void print_key_matrix(_Atomic bool key_matrix[5][8]) {
+    side_t defines = get_defines();
+
     for (int y = 0; y < 5; y++) {
-        for (int x = 0; x < 7; x++) {
+        for (int x = 0; x < 8; x++) {
             if (key_matrix[y][x])
-                printf("%c ", keymap_left[y][x]);
+                printf("%c ", defines.keymap[y][x]);
             else
                 printf("  ");
         }
@@ -21,13 +24,14 @@ void print_key_matrix(_Atomic bool key_matrix[5][7]) {
     printf("\n");
 }
 
-void key_matrix_to_events(_Atomic bool key_matrix[5][7]) {
-    static bool last_matrix[5][7] = {};
+void key_matrix_to_events(_Atomic bool key_matrix[5][8]) {
+    static bool last_matrix[5][8] = {};
+    side_t defines = get_defines();
 
     for (int y = 0; y < 5; y++) {
-        for (int x = 0; x < 7; x++) {
+        for (int x = 0; x < 8; x++) {
             if (last_matrix[y][x] == 0 && key_matrix[y][x] == 1) {
-                printf("%c", keymap_left[y][x]);
+                printf("%c", defines.keymap[y][x]);
             }
             last_matrix[y][x] = key_matrix[y][x];
         }
@@ -41,6 +45,8 @@ int main() {
         sleep_ms(500);
     }
     printf("USB connected\n");
+
+
 
     multicore_launch_core1(monitor_keys);
 
