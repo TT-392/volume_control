@@ -12,16 +12,19 @@ pico_sdk_init()
 if (TARGET tinyusb_device)
 # rest of your project
     add_executable(main
-        src/main.c
-        src/monitor_keys.c
-        src/defines.c
-        src/trrs.c
+                src/main.c
+                src/tinyusb/hid.c
+                src/tinyusb/usb_descriptors.c
+        #        src/monitor_keys.c
+        #        src/defines.c
+        #        src/trrs.c
+
     )
 
-    target_include_directories(main PRIVATE src/)
+    target_include_directories(main PRIVATE src/ src/tinyusb)
 
 # Add pico_stdlib library which aggregates commonly used features
-    target_link_libraries(main pico_stdlib pico_bootrom pico_multicore)
+    target_link_libraries(main pico_stdlib pico_bootrom pico_multicore tinyusb_device tinyusb_board)
 
     pico_enable_stdio_usb(main 1)
     pico_enable_stdio_uart(main 0)
