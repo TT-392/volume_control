@@ -48,7 +48,7 @@
 // Default to Highspeed for MCU with internal HighSpeed PHY (can be port specific), otherwise FullSpeed
 #ifndef BOARD_DEVICE_RHPORT_SPEED
   #if (CFG_TUSB_MCU == OPT_MCU_LPC18XX || CFG_TUSB_MCU == OPT_MCU_LPC43XX || CFG_TUSB_MCU == OPT_MCU_MIMXRT10XX || \
-       CFG_TUSB_MCU == OPT_MCU_NUC505  || CFG_TUSB_MCU == OPT_MCU_CXD56 || CFG_TUSB_MCU == OPT_MCU_SAMX7X)
+       CFG_TUSB_MCU == OPT_MCU_NUC505  || CFG_TUSB_MCU == OPT_MCU_CXD56)
     #define BOARD_DEVICE_RHPORT_SPEED   OPT_MODE_HIGH_SPEED
   #else
     #define BOARD_DEVICE_RHPORT_SPEED   OPT_MODE_FULL_SPEED
@@ -95,14 +95,18 @@
 #endif
 
 //------------- CLASS -------------//
-#define CFG_TUD_HID               1
-#define CFG_TUD_CDC               0
+#define CFG_TUD_CDC               1
 #define CFG_TUD_MSC               0
+#define CFG_TUD_HID               1 // 1 for boot keyboard, 1 for boot mouse
 #define CFG_TUD_MIDI              0
 #define CFG_TUD_VENDOR            0
 
+// CDC FIFO size of TX and RX
+#define CFG_TUD_CDC_RX_BUFSIZE    (TUD_OPT_HIGH_SPEED ? 512 : 64)
+#define CFG_TUD_CDC_TX_BUFSIZE    (TUD_OPT_HIGH_SPEED ? 512 : 64)
+
 // HID buffer size Should be sufficient to hold ID (if any) + Data
-#define CFG_TUD_HID_EP_BUFSIZE    16
+#define CFG_TUD_HID_EP_BUFSIZE    8
 
 #ifdef __cplusplus
  }
