@@ -4,7 +4,9 @@
 #include <stdarg.h>
 #include "tusb.h"
 #include "tinyusb/usb_descriptors.h"
+#include "pico/bootrom.h"
 
+static void handle_cdc_input();
 
 void usb_init() {
     tusb_init();
@@ -12,14 +14,54 @@ void usb_init() {
 
 void usb_task() {
     tud_task();
+
+    if (tud_connected()) {
+        if (tud_cdc_available()) {
+            tud_cdc_write_flush();
+            handle_cdc_input();
+        }
+    }
 }
 
 bool cdc_connected() {
     return tud_cdc_connected();
 }
 
+#define INPUT_MAX_LEN 100 // actual data is 101 because of the \0
+static char received_data[INPUT_MAX_LEN + 1] = "";
+
 bool cdc_data_available() {
-    return tud_cdc_available();
+    return received_data[0] != '\0';
+}
+
+void cdc_get_line(char buffer[INPUT_MAX_LEN + 1]) { // INPUT_MAX_LEN + 1 is 101
+    memcpy(buffer, received_data, INPUT_MAX_LEN + 1);
+    received_data[0] = '\0';
+}
+
+static void handle_cdc_input() {
+    uint8_t inbuf[64];
+    uint32_t inlen = tud_cdc_n_read(ITF_NUM_CDC, inbuf, sizeof(inbuf));
+
+    static char buffer[INPUT_MAX_LEN + 1] = "";
+    static int ind = 0;
+
+    for (int i = 0; i < inlen; i++) {
+        char c = inbuf[i];
+        if (c == '\n') {
+            buffer[ind++] = '\0';
+
+            if (strcmp(buffer, "reset") == 0) {
+                reset_usb_boot(0, 0);
+            }
+
+            strcpy(received_data, buffer);
+            ind = 0;
+        } else if (c != '\r') {
+            if (ind < INPUT_MAX_LEN)
+                buffer[ind++] = c;
+        }
+    }
 }
 
 void keyboard_update(uint8_t key_codes[6]) {
@@ -34,7 +76,6 @@ void keyboard_update(uint8_t key_codes[6]) {
     if (tud_hid_ready()) {
         tud_hid_keyboard_report(ITF_NUM_KEYBOARD, 0, key_codes);
     }
-
 }
 
 static char* replace_lf_with_crlf_allocate_and_free(char* buffer) {
@@ -72,7 +113,7 @@ void cdc_printf(const char *format, ...) {
     vsprintf(buffer, format, args);
     va_end(args);
 
-    buffer = replace_lf_with_crlf_allocate_and_free(buffer);
+//    buffer = replace_lf_with_crlf_allocate_and_free(buffer);
 
     tud_cdc_write_str(buffer);
     tud_cdc_write_flush();

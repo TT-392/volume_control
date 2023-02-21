@@ -15,9 +15,9 @@ if (TARGET tinyusb_device)
                 src/main.c
                 src/tinyusb/usb.c
                 src/tinyusb/usb_descriptors.c
-        #        src/monitor_keys.c
-        #        src/defines.c
-        #        src/trrs.c
+                src/monitor_keys.c
+                src/defines.c
+                src/trrs.c
 
     )
 
