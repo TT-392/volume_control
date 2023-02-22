@@ -23,8 +23,8 @@ void usb_task() {
     }
 }
 
-bool cdc_connected() {
-    return tud_cdc_connected();
+bool usb_connected() {
+    return tud_connected();
 }
 
 #define INPUT_MAX_LEN 100 // actual data is 101 because of the \0

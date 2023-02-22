@@ -6,6 +6,7 @@
 #include "pico/bootrom.h"
 #include "pico/multicore.h"
 #include "monitor_keys.h"
+#include "process_input.h"
 #include "defines.h"
 #include "trrs.h"
 #include "usb.h"
@@ -68,19 +69,13 @@ int main() {
     multicore_launch_core1(monitor_keys);
 
     while (true) {
-        bool master = cdc_connected();
+        bool master = usb_connected();
 
         event_t event = key_matrix_to_events(key_matrix);
         
         if (master) {
             if (event.action != action_none) {
-                //printf("%c %s\n", event.key, event.action == action_up ? "up" : "down");
-                if (event.action == action_down) {
-                    //printf("%c", event.key);
-                    keyboard_update((uint8_t[8]){event.key - 'a' + HID_KEY_A});
-                } else {
-                    keyboard_update((uint8_t[8]){});
-                }
+                process_input(event.action, event.key);
             }
             if (trrs_data_ready()) {
                 uint16_t packet = trrs_read();
@@ -90,13 +85,7 @@ int main() {
                     .action = packet & 0xf000
                 };
 
-                if (event.action == action_down) {
-                    //printf("%c", event.key);
-                    keyboard_update((uint8_t[8]){event.key - 'a' + HID_KEY_A});
-                } else {
-                    keyboard_update((uint8_t[8]){});
-                }
-                //printf("%c %s\n", event.key, event.action == action_up ? "up" : "down");
+                process_input(event.action, event.key);
             }
         } else {
             if (event.action != action_none)
@@ -104,6 +93,12 @@ int main() {
         }
 
         usb_task();
-    }
+
+        if (cdc_data_available()) {
+            char buff[101];
+            cdc_get_line(buff);
+            cdc_printf("aaa: %s\n\r", buff);
+        }
+   }
 }
 

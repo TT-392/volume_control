@@ -15,7 +15,7 @@ then
     #picotool reboot -f -u
 
     if picotool info | grep -q "No accessible RP2040 devices in BOOTSEL mode were found."; then
-        echo -e "\nreset\n" > /dev/ttyACM0
+        echo reset > /dev/ttyACM0
     fi
 
     while picotool info | grep -q "No accessible RP2040 devices in BOOTSEL mode were found."; do

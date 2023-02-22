@@ -1,11 +1,14 @@
 #pragma once
 
+#include <stdbool.h>
+#include <stdint.h>
+
 
 void usb_init();
 
 void usb_task();
 
-bool cdc_connected();
+bool usb_connected();
 
 bool cdc_data_available();
 
