@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "usb.h"
 #include "process_input.h"
+#include "defines.h"
 
 #define MAX_DEPRESSED_KEYS 6
 

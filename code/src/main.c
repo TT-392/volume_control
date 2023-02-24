@@ -69,36 +69,42 @@ int main() {
     multicore_launch_core1(monitor_keys);
 
     while (true) {
-        bool master = usb_connected();
-
-        event_t event = key_matrix_to_events(key_matrix);
-        
-        if (master) {
-            if (event.action != action_none) {
-                process_input(event.action, event.key);
-            }
-            if (trrs_data_ready()) {
-                uint16_t packet = trrs_read();
-
-                event = (event_t){
-                    .key = packet & 0x0ff,
-                    .action = packet & 0xf000
-                };
-
-                process_input(event.action, event.key);
-            }
-        } else {
-            if (event.action != action_none)
-                trrs_send(event.action | event.key);
+        if (key_monitor_event_available()) {
+            key_event_t matrix_event = key_monitor_get_event();
+            process_input(matrix_event.action, defines.keymap[matrix_event.row][matrix_event.col]);
         }
+
+        //bool master = usb_connected();
+
+        //event_t event = key_matrix_to_events(key_matrix);
+        //
+        //if (master) {
+        //    if (event.action != action_none) {
+        //        process_input(event.action, event.key);
+        //    }
+        //    if (trrs_data_ready()) {
+        //        uint16_t packet = trrs_read();
+
+        //        event = (event_t){
+        //            .key = packet & 0x0ff,
+        //            .action = packet & 0xf000
+        //        };
+
+        //        process_input(event.action, event.key);
+        //    }
+        //} else {
+        //    if (event.action != action_none)
+        //        trrs_send(event.action | event.key);
+        //}
+
+
+        //if (cdc_data_available()) {
+        //    char buff[101];
+        //    cdc_get_line(buff);
+        //    cdc_printf("aaa: %s\n\r", buff);
+        //}
 
         usb_task();
-
-        if (cdc_data_available()) {
-            char buff[101];
-            cdc_get_line(buff);
-            cdc_printf("aaa: %s\n\r", buff);
-        }
    }
 }
 

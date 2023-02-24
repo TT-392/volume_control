@@ -18,5 +18,12 @@ typedef struct side {
     uart_inst_t *uart;
 } side_t;
 
+enum actions {
+    ACTION_NONE = 0,
+    ACTION_UP = 0x8000,
+    ACTION_DOWN = 0x4000
+};
+
+
 side_t get_defines();
 
