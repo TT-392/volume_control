@@ -18,7 +18,7 @@ void trrs_send(uint16_t packet) {
     uart_putc_raw(defines.uart, (packet >> 8) & 0xff);
 }
 
-uint16_t trrs_data_ready() {
+uint16_t trrs_data_available() {
     return uart_is_readable(defines.uart);
 }
 
