@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "tusb.h"
+#include "hamming.h"
 #include "pico/stdlib.h"
 #include "pico/bootrom.h"
 #include "pico/multicore.h"
@@ -33,7 +34,7 @@ int main() {
                 process_input(matrix_event.action, mapped_key);
 
             } else {
-                trrs_send(matrix_event.action | mapped_key);
+                trrs_send(hamming_16_11_encode(0xffff & (matrix_event.action | mapped_key)));
             }
 
         }
@@ -41,7 +42,11 @@ int main() {
         if (master) {
             if (trrs_data_available()) {
                 uint16_t packet = trrs_read();
-                process_input(packet & 0xff00, packet & 0xff);
+                packet = hamming_16_11_decode(packet);
+
+                if (packet != 0) {
+                    process_input(packet & 0xff00, packet & 0xff);
+                }
             }
         }
 

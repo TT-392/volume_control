@@ -19,6 +19,7 @@ if (TARGET tinyusb_device)
                 src/defines.c
                 src/trrs.c
                 src/process_input.c
+                src/hamming.c
     )
 
     target_include_directories(main PRIVATE src/ src/tinyusb)

@@ -24,10 +24,10 @@ typedef struct side {
     uart_inst_t *uart;
 } side_t;
 
-enum actions {
+enum actions { // Should be smaller than 12 bits because hamming encoding
     ACTION_NONE = 0,
-    ACTION_UP = 0x8000,
-    ACTION_DOWN = 0x4000
+    ACTION_UP = 0x100,
+    ACTION_DOWN = 0x200
 };
 
 

@@ -20,7 +20,7 @@
 // PX P1 P2 10 P3 09 08 07 P4 06 05 04 03 02 01 00
 // 15 14 13 12 11 10 09 08 07 06 05 04 03 02 01 00
 
-#define hamming_16_11(data) (\
+#define hamming_16_11_encode(data) (\
         PX(data)           << 15 |\
         P1(data)           << 14 |\
         P2(data)           << 13 |\
@@ -30,3 +30,6 @@
         ((data << 1) & 0b0000011100000000) | \
         ((data << 2) & 0b0001000000000000) \
         )
+
+uint16_t hamming_16_11_decode(uint16_t packet);
+
