@@ -64,7 +64,7 @@ static void handle_cdc_input() {
     }
 }
 
-void keyboard_update(uint8_t key_codes[6]) {
+void keyboard_update(uint8_t modifiers, uint8_t key_codes[6]) {
     // Remote wakeup
     if (tud_suspended()) {
         // Wake up host if we are in suspend mode
@@ -74,7 +74,8 @@ void keyboard_update(uint8_t key_codes[6]) {
 
 
     if (tud_hid_ready()) {
-        tud_hid_keyboard_report(ITF_NUM_KEYBOARD, 0, key_codes);
+//        tud_hid_keyboard_report(ITF_NUM_KEYBOARD, modifiers, key_codes);
+        tud_hid_report(ITF_NUM_KEYBOARD, (uint8_t[8]) {modifiers, 0, key_codes[0], key_codes[1]}, 8);
     }
 }
 

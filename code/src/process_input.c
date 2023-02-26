@@ -4,6 +4,7 @@
 #include "process_input.h"
 #include "defines.h"
 
+#define printf cdc_printf
 #define MAX_DEPRESSED_KEYS 6
 #define VIM_KEY SPECIAL_KEY_0
 
@@ -17,28 +18,38 @@ enum mode current_mode = MODE_NORMAL;
 
 void send_over_hid(enum actions action, uint8_t key) {
     static uint8_t depressed_keys[MAX_DEPRESSED_KEYS] = {};
+    static uint8_t modifiers = 0;
 
-    if (action == ACTION_DOWN) {
-        for (int i = 0; i < MAX_DEPRESSED_KEYS; i++) {
-            if (depressed_keys[i] == 0) {
-                depressed_keys[i] = key;
-                break;
-            }
-        }
-    } else if (action == ACTION_UP) {
-        for (int i = 0; i < MAX_DEPRESSED_KEYS; i++) {
-            if (depressed_keys[i] == key) {
-                depressed_keys[i] = 0;
-                break;
-            }
-        }
+    if ((key & 0xf0) == 0xe0) { // modifier keys
+        uint8_t bit = 1 << (key & 0x0f);
+
+        if (action == ACTION_DOWN) {
+            modifiers |= bit;
+        } else if (action == ACTION_UP) {
+            modifiers &= ~bit;
+        } else return;
     } else {
-        return;
+        if (action == ACTION_DOWN) {
+            for (int i = 0; i < MAX_DEPRESSED_KEYS; i++) {
+                if (depressed_keys[i] == 0) {
+                    depressed_keys[i] = key;
+                    break;
+                }
+            }
+        } else if (action == ACTION_UP) {
+            for (int i = 0; i < MAX_DEPRESSED_KEYS; i++) {
+                if (depressed_keys[i] == key) {
+                    depressed_keys[i] = 0;
+                    break;
+                }
+            }
+        } else return;
     }
 
 //    cdc_printf("%02x, %02x, %02x, %02x, %02x, %02x\r\n", depressed_keys[0], depressed_keys[1], depressed_keys[2], depressed_keys[3], depressed_keys[4], depressed_keys[5]);
+    printf("modifiers: %i\r\n", modifiers);
     
-    keyboard_update(depressed_keys);
+    keyboard_update(modifiers, depressed_keys);
 }
 
 void vim_process_input(enum actions action, uint8_t key) {

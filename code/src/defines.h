@@ -11,6 +11,12 @@
 #define SPECIAL_KEY_3 0xf3
 #define SPECIAL_KEY_4 0xf4
 
+#define SPECIAL_KEY_0 0xf0
+#define SPECIAL_KEY_1 0xf1
+#define SPECIAL_KEY_2 0xf2
+#define SPECIAL_KEY_3 0xf3
+#define SPECIAL_KEY_4 0xf4
+
 typedef struct side {
     uint rows[8];
     int row_count;
