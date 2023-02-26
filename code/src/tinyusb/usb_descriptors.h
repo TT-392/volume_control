@@ -25,8 +25,6 @@
 #ifndef USB_DESCRIPTORS_H_
 #define USB_DESCRIPTORS_H_
 
-extern uint8_t const desc_ms_os_20[];
-
 enum
 {
   ITF_NUM_CDC = 0,
