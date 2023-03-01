@@ -3,6 +3,9 @@
 #include "pico/stdlib.h"
 #include "defines.h"
 #include "monitor_matrix.h"
+#include "usb.h"
+
+#define printf cdc_printf
 
 static const uint64_t timeout_us = 1000;
 static bool matrix[5][8] = {0};
@@ -47,6 +50,7 @@ inline static void queue_handle() {
 
 inline static void event_queue(int row, int col, bool key_state) {
     static matrix_event_t event;
+
 
     event.row = row;
     event.col = col;

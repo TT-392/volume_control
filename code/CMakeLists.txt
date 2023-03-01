@@ -20,6 +20,7 @@ if (TARGET tinyusb_device)
                 src/trrs.c
                 src/process_input.c
                 src/hamming.c
+                src/send_over_hid.c
     )
 
     target_include_directories(main PRIVATE src/ src/tinyusb)

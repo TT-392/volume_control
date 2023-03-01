@@ -74,8 +74,8 @@ void keyboard_update(uint8_t modifiers, uint8_t key_codes[6]) {
 
 
     if (tud_hid_ready()) {
-        tud_hid_keyboard_report(ITF_NUM_KEYBOARD, modifiers, key_codes);
-//        tud_hid_report(ITF_NUM_KEYBOARD, (uint8_t[8]) {modifiers, 0, key_codes[0], key_codes[1]}, 8);
+        tud_hid_keyboard_report(modifiers, 0, key_codes); // TODO: ye, I know, this is not how this is supposed to work, but at least it works
+        tud_hid_report(modifiers, (uint8_t[7]) {0,  key_codes[0], key_codes[1], key_codes[2], key_codes[3], key_codes[4], key_codes[5]}, 7);
     }
 }
 
@@ -114,7 +114,7 @@ void cdc_printf(const char *format, ...) {
     vsprintf(buffer, format, args);
     va_end(args);
 
-//    buffer = replace_lf_with_crlf_allocate_and_free(buffer);
+    buffer = replace_lf_with_crlf_allocate_and_free(buffer);
 
     tud_cdc_write_str(buffer);
     tud_cdc_write_flush();
