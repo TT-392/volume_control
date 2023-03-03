@@ -5,6 +5,9 @@
 #include "tusb.h"
 #include "tinyusb/usb_descriptors.h"
 #include "pico/bootrom.h"
+#include "usb.h"
+
+#define printf cdc_printf
 
 static void handle_cdc_input();
 
@@ -73,9 +76,12 @@ void keyboard_update(uint8_t modifiers, uint8_t key_codes[6]) {
     }
 
 
-    if (tud_hid_ready()) {
-        tud_hid_keyboard_report(0, modifiers, key_codes);
+    while (!tud_hid_ready()) { //TODO: a timeout might be desirable here
+        sleep_ms(1);
+        tud_task();
     }
+
+    tud_hid_keyboard_report(0, modifiers, key_codes);
 }
 
 static char* replace_lf_with_crlf_allocate_and_free(char* buffer) {

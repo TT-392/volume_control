@@ -70,7 +70,5 @@ void send_over_hid(enum actions action, uint8_t key) {
 
     
     keyboard_update(modifiers, depressed_keys);
-
-//    printf("{0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x}, 0x%02x\n", depressed_keys[0], depressed_keys[1], depressed_keys[2], depressed_keys[3], depressed_keys[4], depressed_keys[5], modifiers);
 }
 
