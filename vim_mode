@@ -1,11 +1,12 @@
 # implemented:
+hjkl <V^>
 
 # partially implemented
+d: delete
+x: delete (ctrl+x)
+i: exit vim mode
 
 # to implement:
-
-
-hjkl <V^>
 w: ctrl + ->
 b: ctrl + <-
 $: end
@@ -14,15 +15,12 @@ $: end
 y: ctrl+c
 p: ctrl+v
 P: depends on mode, and what was copied
-x: delete (ctrl+x)
 X: backspace (ctrl+x)
 u: ctrl+z
 v: shift down
 V: home, shift down, end, and all of the fancy stuff for arrow keys after this
-d: if shift down(cause of v), ctrl+x
 D: shift down, end, ctrl+x
 dd: home, shift, end, backspace, backspace
-i: exit vim mode
 I: home, exit vim mode (though actually at first char, but idk how I'd do that)
 a: one right, exit vim mode
 A: end, exit vim mode

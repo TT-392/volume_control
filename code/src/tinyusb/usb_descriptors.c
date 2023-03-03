@@ -149,7 +149,7 @@ char* string_desc_arr [] =
   "TinyUSB Device",              // 2: Product
   (char[20]) {},                      // 3: Serials, should use chip ID
   "TinyUSB CDC",                 // 4: CDC Interface
-  "TinyUSB Keyboard"            // 6: HIDs Interface
+  "TinyUSB Keyboard"            // 5: HIDs Interface
 };
 
 static uint16_t _desc_str[32];

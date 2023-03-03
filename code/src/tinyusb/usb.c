@@ -74,8 +74,7 @@ void keyboard_update(uint8_t modifiers, uint8_t key_codes[6]) {
 
 
     if (tud_hid_ready()) {
-        tud_hid_keyboard_report(modifiers, 0, key_codes); // TODO: ye, I know, this is not how this is supposed to work, but at least it works
-        tud_hid_report(modifiers, (uint8_t[7]) {0,  key_codes[0], key_codes[1], key_codes[2], key_codes[3], key_codes[4], key_codes[5]}, 7);
+        tud_hid_keyboard_report(0, modifiers, key_codes);
     }
 }
 

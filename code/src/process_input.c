@@ -20,6 +20,10 @@ void vim_process_input(enum actions action, uint8_t key) {
     static bool shift_down = false;
 
     switch (key) {
+        case HID_KEY_0:
+            send_over_hid(action, HID_KEY_HOME);
+            break;
+            
         case HID_KEY_H:
             send_over_hid(action, HID_KEY_ARROW_LEFT);
             break;

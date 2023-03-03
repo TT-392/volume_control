@@ -25,10 +25,12 @@
 #ifndef USB_DESCRIPTORS_H_
 #define USB_DESCRIPTORS_H_
 
+extern uint8_t const desc_ms_os_20[];
+
 enum
 {
   ITF_NUM_CDC = 0,
-  ITF_NUM_CDC_DATA,
+  ITF_NUM_CDC_DATA, // just a placeholder to increment because cdc has 2 interface descriptors, I think?
   ITF_NUM_KEYBOARD,
   ITF_NUM_TOTAL
 };
