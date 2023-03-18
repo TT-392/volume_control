@@ -1,5 +1,9 @@
 # implemented:
 hjkl <V^>
+0: home
+$: end
+H: pgup?
+L: pgdown?
 
 # partially implemented
 d: delete
@@ -9,15 +13,14 @@ i: exit vim mode
 # to implement:
 w: ctrl + ->
 b: ctrl + <-
-$: end
-0: home
+O: home, enter
 ^: home, ctrl + -> (doesn't work everywhere)
 y: ctrl+c
 p: ctrl+v
 P: depends on mode, and what was copied
 X: backspace (ctrl+x)
 u: ctrl+z
-v: shift down
+v: toggle shift
 V: home, shift down, end, and all of the fancy stuff for arrow keys after this
 D: shift down, end, ctrl+x
 dd: home, shift, end, backspace, backspace
@@ -31,7 +34,6 @@ q: custom macro engine
 R: insert
 r: insert, disable insert after keypress
 o: end, enter
-O: home, enter
 s: ->, backspace, exit vim mode
 S: end, shift down, home, backspace, exit vim mode
 C: shift down, end, backspace, exit vim mode
@@ -39,7 +41,5 @@ c: ?
 G: ?
 gg: ?
 J: end, del, space, <-
-H: pgup?
-L: pgdown?
 /: ctrl+f
 .: repeat

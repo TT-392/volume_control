@@ -7,7 +7,7 @@
 
 #define printf cdc_printf
 
-static const uint64_t timeout_us = 1000;
+static const uint64_t timeout_us = 10000; // for debounce
 static bool matrix[5][8] = {0};
 static uint64_t timestamp_last_update_us[5][8] = {0};
 
