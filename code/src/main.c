@@ -68,34 +68,6 @@ int main() {
 
 
 
-
-
-        //bool master = usb_connected();
-        //
-        //if (matrix_monitor_event_available()) {
-        //    matrix_event_t matrix_event = matrix_monitor_get_event();
-        //    uint8_t mapped_key = defines.keymap[matrix_event.row][matrix_event.col];
-
-        //    if (master) {
-        //        process_input(matrix_event.action, mapped_key);
-
-        //    } else {
-        //        trrs_send(hamming_17_11_encode(0xffff & (matrix_event.action | mapped_key)));
-        //    }
-
-        //}
-
-        //if (master) {
-        //    if (trrs_data_available()) {
-        //        uint17_t packet = trrs_read();
-        //        packet = hamming_17_11_decode(packet);
-
-        //        if (packet != 0) {
-        //            process_input(packet & 0xff00, packet & 0xff);
-        //        }
-        //    }
-        //}
-
         usb_task();
    }
 }
