@@ -4,7 +4,7 @@ openocd_install_location=$HOME"/applications/openocd_rp2040/openocd"
 
 mkdir -p build && cd build
 cmake ..
-make -j$(cat /proc/cpuinfo | grep bogomips | wc -l)
+cmake --build . -j $(nproc)
 retval=$?
 cd ..
 
